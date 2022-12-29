@@ -34,13 +34,13 @@ module.exports = {
       let args = msg.text?.substring(PREFIX.length).split(" ") ?? "";
 
       switch (args[0]) {
-        case "thoitiet":
+        case "weather":
           const weather2 = await weatherFunc2();
           bot.sendChatAction(chatId, "typing");
           setTimeout(() => {
             bot.sendMessage(
               chatId,
-              `Vị trí : ${weather2.request.query}.\nNhiệt độ: ${weather2.current.temperature}°C.\nCảm thấy như: ${weather2.current.feelslike}°C.\nTốc độ gió : ${weather2.current.wind_speed}km/h\nĐộ ẩm không khí : ${weather2.current.humidity}%\nChỉ số UV : ${weather2.current.uv_index}`,
+              `🌦Thời tiết tại: ${weather2.request.query}.\nNhiệt độ: ${weather2.current.temperature}°C.\nCảm thấy như: ${weather2.current.feelslike}°C.\nTốc độ gió : ${weather2.current.wind_speed}km/h\nĐộ ẩm không khí : ${weather2.current.humidity}%\nChỉ số UV : ${weather2.current.uv_index}`,
               {
                 reply_to_message_id: msg.message_id,
               }
@@ -56,15 +56,27 @@ module.exports = {
           setTimeout(() => {
             bot.sendMessage(
               chatId,
-              `Tỉ giá ${usd.CurrencyName}\n- Giá mua vào : ${usd.Buy}đ.\n- Giá bán ra : ${usd.Sell}đ.`,
+              `💴 Tỉ giá ${usd.CurrencyName}\n- Giá mua vào : ${usd.Buy}đ.\n- Giá bán ra : ${usd.Sell}đ.`,
               {
                 reply_to_message_id: msg.message_id,
               }
             );
           }, "500");
           break;
+        case "/help":
+          await bot.sendMessage(
+            msg.chat.id,
+            "To chat with me, you can:\n" +
+              "   • send messages that start with `/`\n\n" +
+              "Command list:\n" +
+              `(When using a command in a group, make sure to include a mention after the command, like /help).\n` +
+              "  • /help Show help information.\n" +
+              "  • /weather Show weather today.\n" +
+              "  • /vcb Show exchange USD to VND."
+          );
+          break;
         default:
-          bot.sendMessage(chatId, "Lệnh không hợp lệ!");
+          bot.sendMessage(chatId, "⛔️ Lệnh không hợp lệ!");
       }
     });
   },
