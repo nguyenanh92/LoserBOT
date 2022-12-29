@@ -10,14 +10,10 @@
     "start": "node main.js"
   },
   "dependencies": {
-    "akaneko": "^5.0.1",
     "body-parser": "^1.19.0",
     "express": "^4.17.1",
-    "node-telegram-bot-api": "^0.53.0",
-    "sqlite3": "^5.0.2"
-  },
-  "engines": {
-    "node": "18.x"
+    "node-fetch": "^2.6.7",
+    "node-telegram-bot-api": "^0.53.0"
   },
   "repository": {
     "url": "https://glitch.com/edit/#!/hello-express"
