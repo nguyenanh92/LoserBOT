@@ -16,9 +16,6 @@
     "express": "^4.17.1",
     "node-telegram-bot-api": "^0.53.0",
   },
-  "engines": {
-    "node": "17.x"
-  },
   "repository": {
     "url": "https://glitch.com/edit/#!/hello-express"
   },
