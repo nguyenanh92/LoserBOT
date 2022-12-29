@@ -15,10 +15,9 @@
     "chatgpt": "^3.3.6",
     "express": "^4.17.1",
     "node-telegram-bot-api": "^0.53.0",
-    "sqlite3": "^5.0.2"
   },
   "engines": {
-    "node": "18.x"
+    "node": "17.x"
   },
   "repository": {
     "url": "https://glitch.com/edit/#!/hello-express"
