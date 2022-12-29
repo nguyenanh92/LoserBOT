@@ -13,13 +13,6 @@ const bot = new TelegramBot(token, { polling: true });
 
 const PREFIX = "/";
 
-const apiKey = "";
-
-// const api = new ChatGPTAPIBrowser({
-//   email: process.env.OPENAI_EMAIL,
-//   password: process.env.OPENAI_PASSWORD,
-// });
-
 module.exports = {
   startBot: () => {
     bot.onText(/\/echo (.+)/, (msg, match) => {
@@ -29,12 +22,12 @@ module.exports = {
     });
 
     bot.on("message", async (msg) => {
+      const { username: botUsername } = await bot.getMe();
+      console.log(botUsername);
       const chatId = msg.chat.id;
-
       let args = msg.text?.substring(PREFIX.length).split(" ") ?? "";
-
       switch (args[0]) {
-        case "weather":
+        case `weather@${botUsername}`:
           const weather2 = await weatherFunc2();
           bot.sendChatAction(chatId, "typing");
           setTimeout(() => {
@@ -47,7 +40,7 @@ module.exports = {
             );
           }, "1000");
           break;
-        case "vcb":
+        case `vcb@${botUsername}`:
           const vcb = await vcbFunc();
           const usd = vcb?.ExrateList.Exrate.find(
             (x) => x._attributes?.CurrencyCode === "USD"
@@ -63,13 +56,13 @@ module.exports = {
             );
           }, "500");
           break;
-        case "/help":
+        case `help@${botUsername}`:
           await bot.sendMessage(
             msg.chat.id,
             "To chat with me, you can:\n" +
-              "   • send messages that start with `/`\n\n" +
+              "  • send messages that start with `/`\n" +
               "Command list:\n" +
-              `(When using a command in a group, make sure to include a mention after the command, like /help).\n` +
+              `(When using a command in a group, make sure to include a mention after the command, like /help@${botUsername}).\n` +
               "  • /help Show help information.\n" +
               "  • /weather Show weather today.\n" +
               "  • /vcb Show exchange USD to VND."
