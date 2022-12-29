@@ -14,7 +14,7 @@
     "body-parser": "^1.19.0",
     "chatgpt": "^3.3.6",
     "express": "^4.17.1",
-    "node-telegram-bot-api": "^0.53.0",
+    "node-telegram-bot-api": "^0.53.0"
   },
   "repository": {
     "url": "https://glitch.com/edit/#!/hello-express"
