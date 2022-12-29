@@ -30,7 +30,9 @@ module.exports = {
 
     bot.on("message", async (msg) => {
       const chatId = msg.chat.id;
-      let args = msg.text.substring(PREFIX.length).split(" ");
+
+      let args = msg.text?.substring(PREFIX.length).split(" ") ?? "";
+
       switch (args[0]) {
         case "thoitiet":
           const weather2 = await weatherFunc2();
