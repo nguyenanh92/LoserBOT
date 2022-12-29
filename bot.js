@@ -27,7 +27,7 @@ module.exports = {
       const chatId = msg.chat.id;
       let args = msg.text?.substring(PREFIX.length).split(" ") ?? "";
       switch (args[0]) {
-        case `weather@${botUsername}`:
+        case `weather@${botUsername}` || "weather":
           const weather2 = await weatherFunc2();
           bot.sendChatAction(chatId, "typing");
           setTimeout(() => {
@@ -40,7 +40,7 @@ module.exports = {
             );
           }, "1000");
           break;
-        case `vcb@${botUsername}`:
+        case `vcb@${botUsername}` || "vcb":
           const vcb = await vcbFunc();
           const usd = vcb?.ExrateList.Exrate.find(
             (x) => x._attributes?.CurrencyCode === "USD"
@@ -56,7 +56,7 @@ module.exports = {
             );
           }, "500");
           break;
-        case `help@${botUsername}`:
+        case `help@${botUsername}` || "help":
           await bot.sendMessage(
             msg.chat.id,
             "To chat with me, you can:\n" +
