@@ -28,10 +28,10 @@ module.exports = {
 
       let text = args[0];
 
-      if (text.includes("@")) {
+      if (text?.includes("@")) {
         let str = text;
-        let index = str.indexOf("@"); // Find the index of the @ symbol
-        text = str.substring(0, index); // Extract the text before the @ symbol
+        let index = str?.indexOf("@"); // Find the index of the @ symbol
+        text = str?.substring(0, index); // Extract the text before the @ symbol
       }
       switch (text) {
         case "weather":
