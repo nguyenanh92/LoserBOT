@@ -42,6 +42,7 @@ module.exports = {
               chatId,
               "🌦Thời tiết tại:" +
                 ` ${weather2.request.query}.\n` +
+                ` • Mô tả: ${data.current.weather_descriptions}.\n` +
                 ` • Nhiệt độ: ${weather2.current.temperature}°C.\n` +
                 ` • Cảm thấy như: ${weather2.current.feelslike}°C.\n` +
                 ` • Tốc độ gió: ${weather2.current.wind_speed}km/h\n` +
