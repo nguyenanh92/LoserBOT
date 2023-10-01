@@ -2,6 +2,8 @@ const TelegramBot = require("node-telegram-bot-api");
 
 const fetch = require("node-fetch");
 
+const { DOMParser } = require('xmldom');
+
 let settings = { method: "Get" };
 
 const token =
@@ -44,6 +46,12 @@ module.exports = {
           bot.sendChatAction(chatId, "typing");
           setTimeout(async () => {
             bot.sendPhoto(chatId, await getImageDog());
+          }, "500");
+          break;
+        case "kqxs":
+          bot.sendChatAction(chatId, "typing");
+          setTimeout(async () => {
+            bot.sendMessage(chatId, await fetchRss());
           }, "500");
           break;
         case "weather":
@@ -92,11 +100,12 @@ module.exports = {
             `(Khi sử dụng lệnh trong nhóm, hãy đảm bảo bao gồm đề cập sau lệnh, như /help).\n` +
             "  • /help Hiển thị thông tin trợ giúp.\n" +
             "  • /weather Hiển thị thời tiết hôm nay.\n" +
-            "  • /vcb Show đổi USD sang VND." +
-            "  • /cat Hiển thị 1 bức ảnh mèo ngẫu nhiên." +
-            "  • /dog Hiển thị 1 bức ảnh chó ngẫu nhiên."
+            "  • /vcb Show đổi USD sang VND.\n" +
+            "  • /cat Hiển thị 1 bức ảnh mèo ngẫu nhiên.\n" +
+            "  • /dog Hiển thị 1 bức ảnh chó ngẫu nhiên.\n" +
+            "  • /kqxs Kết quả xổ số miền bắc.\n"
+
           );
-          break;
         default:
           bot.sendMessage(chatId, "⛔️ Lệnh không hợp lệ!");
       }
@@ -123,7 +132,6 @@ let vcbFunc = async () =>
     })
     .then((json) => json);
 
-
 let getImageCat = async () =>
   await fetch("https://api.thecatapi.com/v1/images/search", settings)
     .then((res) => res?.json())
@@ -133,3 +141,35 @@ let getImageDog = async () =>
   await fetch("https://api.thedogapi.com/v1/images/search", settings)
     .then((res) => res?.json())
     .then((json) => json[0].url);
+
+async function fetchRss() {
+  try {
+    const rssUrl = 'https://xskt.com.vn/rss-feed/mien-bac-xsmb.rss';
+    const response = await fetch(rssUrl);
+    const xmlText = await response.text();
+    const xmlDoc = new DOMParser().parseFromString(xmlText, 'text/xml');
+
+    const items = xmlDoc.getElementsByTagName('item');
+    let htmlString = '';
+
+    for (let i = 0; i < 1; i++) {
+      const item = items[i];
+      const title = item.getElementsByTagName('title')[0].textContent;
+      const description = item.getElementsByTagName('description')[0].textContent;
+      const link = item.getElementsByTagName('link')[0].textContent;
+      const pubDate = item.getElementsByTagName('pubDate')[0].textContent;
+
+      const itemHtml = `
+        • ${title}:${description} \n
+        `;
+      htmlString = itemHtml;
+
+    }
+    return htmlString;
+
+  } catch (error) {
+    console.error('Error fetching RSS:', error);
+    return 'Error fetching RSS';
+  }
+}
+
