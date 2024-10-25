@@ -39,5 +39,4 @@ jobs:
             cd /loser-bot
             git pull origin main
             npm install
-            npm run build
             pm2 start main.js --name "loser-bot"
