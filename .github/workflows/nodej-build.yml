@@ -12,7 +12,7 @@ jobs:
     
     strategy:
       matrix:
-        node-version: [18.x] # Chỉ dùng một version Node.js để deploy
+        node-version: [18.x]
 
     steps:
       - uses: actions/checkout@v4
@@ -22,9 +22,6 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           
-      - name: Install dependencies
-        run: npm install
-        
       - name: Deploy to Ubuntu server
         uses: appleboy/ssh-action@v1.0.0
         with:
@@ -33,7 +30,36 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: ${{ secrets.PORT }}
           script: |
-            cd /loser-bot
-            git pull origin main
+            # Kiểm tra và tạo thư mục nếu chưa tồn tại
+            mkdir -p /home/${{ secrets.USERNAME }}/loser-bot
+            
+            # Di chuyển vào thư mục
+            cd /home/${{ secrets.USERNAME }}/loser-bot
+            
+            # Kiểm tra git repository
+            if [ ! -d .git ]; then
+              git init
+              git remote add origin https://github.com/nguyenanh92/LoserBOT.git
+            fi
+            
+            # Pull code mới
+            git fetch --all
+            git reset --hard origin/main
+            
+            # Cài đặt dependencies
             npm install
-            pm2 start main.js --name "loser-bot"
+            
+            # Kiểm tra PM2
+            if ! command -v pm2 &> /dev/null; then
+              npm install -g pm2
+            fi
+            
+            # Restart hoặc start ứng dụng
+            if pm2 list | grep -q "loser-bot"; then
+              pm2 restart loser-bot
+            else
+              pm2 start main.js --name "loser-bot"
+            fi
+            
+            # Lưu cấu hình PM2
+            pm2 save
